@@ -2,31 +2,63 @@ require 'rake'
 require 'rake/clean'
 require 'yajl'
 
-root_path = 'example'
+dsgn_name = 'example'
 
-Encoder = Yajl::Encoder.new :pretty => true
+# Initialize JSON parser and encoder
+JSONEncoder = Yajl::Encoder.new :pretty => true
+JSONParser = Yajl::Parser.new :symbolize_keys => true
 
-CLEAN.include(File.join(root_path, 'shows.json'))
+# Find previously rendered files
+RENDERS = FileList[File.join(dsgn_name, 'render', '**', '*.json')]
+RENDERS.include FileList[File.join(dsgn_name, 'render', '_*')]
 
-# Initialize source files
-SRC_SHOWS = FileList[File.join(root_path, 'shows', '*.js')]
+desc "Remove temporary files created during the build process."
+CLEAN.include(RENDERS)
 
-desc "Assemble show functions"
-file "#{root_path}/shows.json" => SRC_SHOWS do
-  shows = read_files(SRC_SHOWS)
-  File.open("#{root_path}/shows.json", 'w'){|f| f.puts Encoder.encode(shows)}
+desc "Remove all files generated during the build process."
+CLOBBER.include(File.join(dsgn_name, '*.json'))
+
+# Determine which files need to be rendered
+DSGN_DIRS = FileList[File.join(dsgn_name, 'render', '**', '*')].pathmap('%d').uniq
+DSGN_HEAD = FileList[File.join(dsgn_name, 'render', '_id.txt')]
+DSGN_BODY = DSGN_DIRS.ext('.json').reverse
+
+desc "Assemble a JSON file from source directory"
+rule '.json' => lambda { |file| file.pathmap('%X')} do |t|
+  leaf_files = FileList[File.join(t.source, '*.*')]
+  leafs = parse_leafs(leaf_files)
+  File.open(t.name, 'w'){|f| f.puts JSONEncoder.encode(leafs)}
+  puts "Assembled #{t.name} from source directory"
 end
+
+desc "Render design document _id header element"
+rule '_id.txt' do |t|
+  id = '_design/' + t.name.pathmap('%-2d').pathmap('%1d')
+  File.open(t.name, 'w'){|f| f.write id}
+  puts "Rendered #{t.name}"
+end
+
+desc "Render the design document"
+task :render => [*DSGN_HEAD, *DSGN_BODY]
 
 # Helper functions
 
-def read_files file_list
+def parse_leafs file_list
   
-  hash = file_list.inject({}) do |result, file|  
-    name = file.pathmap('%n')
-    source = File.read(file)   
-    result[name] = source
+  hash = file_list.inject({}) do |result, path|
+      
+    case path.pathmap('%x')
+    when 'js'
+      content = File.read(path)
+    when '.json'
+      content = JSONParser.parse(File.read(path))
+    else
+      content = File.read(path)
+    end
     
-    result  
+    result[path.pathmap('%n')] = content
+    result
+    
   end
   
   hash
