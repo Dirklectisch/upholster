@@ -1,4 +1,4 @@
 Backlog:
-	- Assemble show functions .js files into JSON document
+	- Assemble show functions .js files into JSON document @done(2011-05-05)
 	- Merge show function JSON into design document
 	- Publish design document to database instance
