@@ -4,6 +4,9 @@ require 'yajl'
 
 dsgn_name = 'example'
 
+# Load Rake Tasks
+FileList[File.join('tasks', '*')].each{|p| load p}
+
 # Initialize JSON parser and encoder
 JSONEncoder = Yajl::Encoder.new :pretty => true
 JSONParser = Yajl::Parser.new :symbolize_keys => true
@@ -39,7 +42,7 @@ rule '_id.txt' do |t|
 end
 
 desc "Render the design document"
-task :render => [*DSGN_HEAD, *DSGN_BODY]
+task :assemble => [*DSGN_HEAD, *DSGN_BODY]
 
 # Helper functions
 
