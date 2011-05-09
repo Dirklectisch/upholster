@@ -1,0 +1,1 @@
+require 'rake/resource_task.rb'
