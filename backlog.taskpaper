@@ -3,6 +3,9 @@ Backlog:
 	- Merge show function JSON into design document @done(2011-05-06)
 	- Download Closure Template tools @done(2011-05-06)
 	- Invoke tasks from any folder on disk
+		- Parse 'command' and 'target' cli options
+		- Use path of execution as default target
+		- Translate command to rake task invocation
 	- Publish design document to a database instance
 		- Initialize a database
 		- Publish the design document

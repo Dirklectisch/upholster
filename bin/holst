@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+# Load Rake Files
+task_path = File.expand_path(File.join(File.dirname(__FILE__), '..', 'tasks', '*.rake'))
+Dir.glob(task_path).each do |rake_file|
+  #puts rake_file
+  #load rake_file
+end
+
+# Parse command line options
+target = File.expand_path(File.join(Dir.pwd, ARGV[1] || '.'))
+command = ARGV[0]
+
+puts "Executing #{command} on #{target}"
