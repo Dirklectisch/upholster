@@ -2,6 +2,11 @@ Backlog:
 	- Assemble show functions .js files into JSON document @done(2011-05-05)
 	- Merge show function JSON into design document @done(2011-05-06)
 	- Download Closure Template tools @done(2011-05-06)
+	- Invoke tasks from any folder on disk
 	- Publish design document to a database instance
+		- Initialize a database
+		- Publish the design document
+		- Update the design document
+	- Configure a target host / database
 	- Render a 'Hello World' template
 	- Scaffold an empty design document canvas

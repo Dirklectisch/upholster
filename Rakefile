@@ -2,20 +2,21 @@ require 'rake'
 require 'rake/clean'
 require 'yajl'
 
-CLEAN.include FileList[File.join('**', '*.json')]
+dsgn_root = '/Users/dirk/Sites/upholster/example'
 
-desc 'Assemble a document ID literal file'
-file 'example/render.json' => 'example/render/_id.txt'
+CLEAN.include FileList[File.join('**', '_id.txt')]
 
 desc "Render design document _id header element"
 rule '_id.txt' do |t|
   
   puts "Rendering #{t.name}"
-  File.open(t.name, 'w') do |file|
-    file.write '_design/' + t.name.pathmap('%-2d').pathmap('%1d')
+  File.open(t.name, 'w') do |f|
+    f.write '_design/' + dsgn_root.pathmap('%n')
   end
   
-end
+end 
+
+CLEAN.include FileList[File.join('**', '*.json')]
 
 desc "Assemble a JSON file from source directory"
 rule '.json' => lambda {|file| 
@@ -25,7 +26,18 @@ rule '.json' => lambda {|file|
   } do |t|
     
     # Raise an ArgumentError if one of the source files can not be found
-    raise ArgumentError if t.sources.empty? || t.sources.all? {|src| !File.exist?(src)}
+    if t.sources.empty? || t.sources.any? {|src| !File.exist?(src)}
+      missing_src = t.sources.select{|src| !File.exist?(src)}
+      begin
+        missing_src.each do |src|
+          puts "Manually invoking #{src} task"
+          Rake::Task[src].invoke
+        end 
+      rescue Exception => e
+        puts e.message
+        raise ArgumentError, "Missing #{missing_src} to build #{t.name}" 
+      end
+    end
 
     puts "Assembling #{t.name} from #{t.sources}"   
     File.open(t.name, 'w') do |file|
@@ -43,3 +55,5 @@ rule '.json' => lambda {|file|
       
     end    
 end
+
+file 'example/render.json' => 'example/render/_id.txt'
