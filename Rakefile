@@ -2,7 +2,22 @@ require 'rake'
 require 'rake/clean'
 require 'yajl'
 
-dsgn_root = '/Users/dirk/Sites/upholster/example'
+BASE_FILES = FileList['render', File.join('render', '_id.txt')]
+
+desc "Initialize new design document directory"
+task :init, [:target] do |t, args|
+  args.with_defaults :target => Dir.pwd
+
+  Dir.exist?(args.target) || Dir.mkdir(args.target)
+  Dir.chdir(args.target) do |root|
+    BASE_FILES.each {|f| Rake::Task[f].invoke }
+    #Rake::Task['render'].invoke
+    #Rake::Task[File.join('render', '_id.txt')].invoke
+  end
+  
+end
+
+directory 'render'
 
 CLEAN.include FileList[File.join('**', '_id.txt')]
 
@@ -11,10 +26,11 @@ rule '_id.txt' do |t|
   
   puts "Rendering #{t.name}"
   File.open(t.name, 'w') do |f|
-    f.write '_design/' + dsgn_root.pathmap('%n')
+    dsgn_name = File.expand_path(t.name).pathmap('%-2d').pathmap('%1d')
+    f.write '_design/' + dsgn_name
   end
   
-end 
+end
 
 CLEAN.include FileList[File.join('**', '*.json')]
 
@@ -24,6 +40,9 @@ rule '.json' => lambda {|file|
       File.directory?(file) ? file.pathmap('%X').ext('json') : file
     end.uniq
   } do |t|
+    
+    # Add _id.txt to sources if we are building render.json
+    t.sources.unshift File.join(t.name.pathmap('%X'), '_id.txt')  if t.name.include? 'render.json'
     
     # Raise an ArgumentError if one of the source files can not be found
     if t.sources.empty? || t.sources.any? {|src| !File.exist?(src)}
@@ -55,5 +74,3 @@ rule '.json' => lambda {|file|
       
     end    
 end
-
-file 'example/render.json' => 'example/render/_id.txt'
