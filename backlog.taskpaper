@@ -7,9 +7,10 @@ Backlog:
 		- Use path of execution as default target @done(2011-05-12)
 		- Translate command to rake task invocation @done(2011-05-12)
 	- Publish design document to a database instance
-		- Initialize a database
-		- Publish the design document
+		- Initialize a new database @done(2011-05-12)
+		- Publish the design document @done(2011-05-12)
 		- Update the design document
+	- Clean / Clobber tasks for resources
 	- Configure a target host / database
 	- Render a 'Hello World' template
 	- Initialize a new design document @done(2011-05-12)

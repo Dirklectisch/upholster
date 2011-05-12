@@ -5,7 +5,9 @@ task = ARGV[0]
 target = ARGV[1]
 
 # Load Rakefiles
+load File.expand_path(File.join(File.dirname(__FILE__), '..', 'tasks', 'admin.rake'))
 load File.expand_path(File.join(File.dirname(__FILE__), '..', 'tasks', 'assemble.rake'))
+load File.expand_path(File.join(File.dirname(__FILE__), '..', 'tasks', 'publish.rake'))
 
 begin
   Rake::Task[task].invoke((target unless nil))

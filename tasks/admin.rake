@@ -9,10 +9,10 @@ libdirs.each do |path|
 end
 
 # Load application specific libraries
-libfiles = FileList[File.join(File.dirname(__FILE__), '..' '**', 'lib', '*.rb')].pathmap('%n')
-ENV['RUBYOPT'] = '-r ' + libfiles.join(' ')
-
-require *libfiles
+# libfiles = FileList[File.join(File.dirname(__FILE__), '..' '**', 'lib', '*.rb')].pathmap('%n')
+# ENV['RUBYOPT'] = '-r ' + libfiles.join(' ')
+# 
+# require *libfiles
 
 desc "Open an irb session preloaded with paths"
 task :console do
