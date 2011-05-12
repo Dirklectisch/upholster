@@ -1,17 +1,27 @@
 #!/usr/bin/env ruby
 
 # Parse command line options
-task = ARGV[0]
-target = ARGV[1]
+arguments = ARGV
+task = arguments.shift
+target = arguments.shift || Dir.pwd
+options = arguments.join(' ') unless arguments.empty?
 
 # Load Rakefiles
 load File.expand_path(File.join(File.dirname(__FILE__), '..', 'tasks', 'admin.rake'))
 load File.expand_path(File.join(File.dirname(__FILE__), '..', 'tasks', 'assemble.rake'))
 load File.expand_path(File.join(File.dirname(__FILE__), '..', 'tasks', 'publish.rake'))
 
-begin
-  Rake::Task[task].invoke((target unless nil))
-rescue Exception => e
-  puts e.message
-  puts e.backtrace
+if task == 'init' && !Dir.exist?(target)
+  Dir.mkdir(target)
+elsif !Dir.exist?(target)
+  raise ArgumentError, "Target resource does not exist"
+end  
+
+Dir.chdir(target) do
+  begin
+    Rake::Task[task].invoke((options unless nil))
+  rescue Exception => e
+    puts e.message
+    puts e.backtrace
+  end
 end

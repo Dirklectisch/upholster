@@ -9,7 +9,7 @@ include Rufus::Verbs
 
 task :publish, [:database] do |t, args|
   args.with_defaults :database => 'http://dirklectisch.iriscouch.com/example'
-  design_doc = args.database + '/_design/' + Dir.pwd.pathmap('%n')
+  design_doc = args.database + '/_design/' + File.expand_path(Dir.pwd).pathmap('%n')
   
   resource args.database do |rt|
     puts "Creating database #{rt.name}"
