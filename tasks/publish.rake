@@ -3,11 +3,13 @@ require 'rake/resource_task'
 require 'yajl'
 require 'rufus-verbs'
 
+CLEAN.include File.join('render', '_rev.txt')
+
 include Rufus::Verbs
 
 task :publish, [:database] do |t, args|
-  args.with_default :database => 'http://dirklectisch.iriscouch.com/example'
-  design_doc = args.database + '/_design/' + Dir.pwd.pathmap('%-1d')
+  args.with_defaults :database => 'http://dirklectisch.iriscouch.com/example'
+  design_doc = args.database + '/_design/' + Dir.pwd.pathmap('%n')
   
   resource args.database do |rt|
     puts "Creating database #{rt.name}"
@@ -25,7 +27,17 @@ task :publish, [:database] do |t, args|
       request['content-type'] = 'application/json'
       File.read('render.json')
     end
-    puts resp.code.to_i
+    if resp.code.to_i == 201
+      _rev = resp.header['Etag']
+      File.open(File.join('render', '_rev.txt'), 'w'){|f| f.write _rev.slice(1, 34)}
+      puts "Design document updated (_rev: #{_rev})"
+    elsif resp.code.to_i == 409
+      _rev = head(rt.name).header['Etag']
+      File.open(File.join('render', '_rev.txt'), 'w'){|f| f.write _rev.slice(1, 34)}
+      puts "Update conflict saved new revision number (_rev: #{_rev})"
+    else 
+      puts "Failed to update document (#{resp.code.to_i})"
+    end
   end
   
   Rake::Task[design_doc].invoke

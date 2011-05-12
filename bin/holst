@@ -13,4 +13,5 @@ begin
   Rake::Task[task].invoke((target unless nil))
 rescue Exception => e
   puts e.message
+  puts e.backtrace
 end

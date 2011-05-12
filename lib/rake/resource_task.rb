@@ -6,7 +6,7 @@ module Rake
   class ResourceTask < Task
   
     def needed?
-      !exsist? #|| out_of_date?(timestamp)
+      !exsist? || out_of_date?(timestamp)
     end
     
     def exsist?
@@ -14,7 +14,11 @@ module Rake
     end
     
     def timestamp
-      DateTime.parse(http_response.header['Last-Modified']) || EARLY
+      begin
+        DateTime.parse(http_response.header['Last-Modified'])
+      rescue
+        EARLY
+      end
     end
         
     def out_of_date? stamp
