@@ -6,23 +6,10 @@ BASE_FILES = FileList['render', File.join('render', '_id.txt')]
 CLOBBER.include BASE_FILES
 
 desc "Initialize new design document directory"
-task :init, [:target] do |t, args|
-  args.with_defaults :target => Dir.pwd
-
-  Dir.exist?(args.target) || Dir.mkdir(args.target)
-  Dir.chdir(args.target) do |root|
-    BASE_FILES.each {|f| Rake::Task[f].invoke }
-  end
-  
-end
+task :init => BASE_FILES
 
 desc "Assemble renders into design document"
-task :assemble, [:target] do |t, args|  
-  args.with_defaults :target => Dir.pwd
-  Dir.chdir(args.target) do |root|
-    Rake::Task['render.json'].invoke
-  end
-end 
+task :assemble => [:init, 'render.json']
 
 directory 'render'
 

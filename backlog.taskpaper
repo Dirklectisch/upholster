@@ -10,10 +10,11 @@ Backlog:
 		- Initialize a new database @done(2011-05-12)
 		- Publish the design document @done(2011-05-12)
 		- Update the design document @done(2011-05-12)
-		- Publish document from outside design source directory
+		- Publish document from outside design source directory @done(2011-05-12)
 		- Conditional update for couchdb documents
+	- Render a 'Hello World' template
 	- Update .json render when src file is removed
 	- Clean / Clobber tasks for resources
 	- Configure a target host / database
-	- Render a 'Hello World' template
 	- Initialize a new design document @done(2011-05-12)
+	- Better command line argument parsing
