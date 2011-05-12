@@ -1,7 +1,7 @@
 require 'rake'
 
 # Load application specific library paths
-libdirs = FileList[File.join('.', '**', 'lib')]
+libdirs = FileList[File.join(File.dirname(__FILE__), '..', '**', 'lib')]
 ENV['RUBYLIB'] = libdirs.join(':')
 
 libdirs.each do |path|
@@ -9,7 +9,7 @@ libdirs.each do |path|
 end
 
 # Load application specific libraries
-libfiles = FileList[File.join('.', '**', 'lib', '*.rb')].pathmap('%n')
+libfiles = FileList[File.join(File.dirname(__FILE__), '..' '**', 'lib', '*.rb')].pathmap('%n')
 ENV['RUBYOPT'] = '-r ' + libfiles.join(' ')
 
 require *libfiles
