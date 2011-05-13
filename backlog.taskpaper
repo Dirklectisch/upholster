@@ -1,20 +1,17 @@
 Backlog:
-	- Assemble show functions .js files into JSON document @done(2011-05-05)
-	- Merge show function JSON into design document @done(2011-05-06)
-	- Download Closure Template tools @done(2011-05-06)
-	- Invoke tasks from any folder on disk @done(2011-05-12)
-		- Parse 'command' and 'target' cli options @done(2011-05-12)
+	- Assemble a design document from separate files
+		- Assemble directories into JSON document @done(2011-05-05)
+		- Initialize a new design document @done(2011-05-12)
+		- Invoke build tasks from any folder on disk @done(2011-05-12)
 		- Use path of execution as default target @done(2011-05-12)
-		- Translate command to rake task invocation @done(2011-05-12)
+		- Update .json render when src file is removed
 	- Publish design document to a database instance
 		- Initialize a new database @done(2011-05-12)
 		- Publish the design document @done(2011-05-12)
 		- Update the design document @done(2011-05-12)
 		- Publish document from outside design source directory @done(2011-05-12)
-		- Conditional update for couchdb documents
-	- Render a 'Hello World' template
-	- Update .json render when src file is removed
-	- Clean / Clobber tasks for resources
-	- Configure a target host / database
-	- Initialize a new design document @done(2011-05-12)
-	- Better command line argument parsing
+		- Configure a target host / database
+		- Conditional update for CouchDB documents
+		- Clean / Clobber tasks for CouchDB resources
+	- Compile templates to display (show/list) functions
+
