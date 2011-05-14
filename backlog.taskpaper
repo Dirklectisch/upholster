@@ -11,7 +11,7 @@ Backlog:
 		- Publish the design document @done(2011-05-12)
 		- Update the design document @done(2011-05-12)
 		- Publish document from outside design source directory @done(2011-05-12)
-		- Configure a target host / database
+		- Configure a target host / database @done(2011-05-14)
 		- Conditional update for CouchDB documents
 		- Clean / Clobber tasks for CouchDB resources
 	- Command Line Interface

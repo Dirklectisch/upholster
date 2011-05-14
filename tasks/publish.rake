@@ -8,14 +8,14 @@ CLEAN.include File.join('render', '_rev.txt')
 include Rufus::Verbs
 
 task :publish, [:database] do |t, args|
-  args.with_defaults :database => 'http://dirklectisch.iriscouch.com/example'
+  args.with_defaults :database => CONFIG['database'][:default] #'http://dirklectisch.iriscouch.com/example'
   design_doc = args.database + '/_design/' + File.expand_path(Dir.pwd).pathmap('%n')
   
   resource args.database do |rt|
     puts "Creating database #{rt.name}"
     resp = put(rt.name)
     if resp.code.to_i == 201
-      puts "Database Created"
+      puts "Database #{rt.name} Created"
     else
       puts "Database not created #{resp.code.to_i}"
     end

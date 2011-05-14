@@ -1,8 +1,9 @@
 require 'rake'
 require 'rake/clean'
 require 'yajl'
+require 'yaml'
 
-BASE_FILES = FileList['render', File.join('render', '_id.txt')]
+BASE_FILES = FileList['render', 'config', File.join('config', 'database.yml'), File.join('render', '_id.txt')]
 CLOBBER.include BASE_FILES
 
 desc "Initialize new design document directory"
@@ -12,6 +13,14 @@ desc "Assemble renders into design document"
 task :assemble => [:init, 'render.json']
 
 directory 'render'
+directory 'config'
+
+desc "Render database configuration file"
+file 'config/database.yml' => 'config' do |t|
+  puts "Rendering #{t.name}"
+  database_cfg = {:default => 'http://127.0.0.1:5984/upholster'}
+  File.open('config/database.yml', 'w') {|f| f.write database_cfg.to_yaml}
+end
 
 desc "Render design document _id header element"
 rule '_id.txt' do |t|
@@ -30,10 +39,13 @@ desc "Assemble a JSON file from source directory"
 rule '.json' => lambda {|file| 
     FileList[File.join(file.pathmap('%X'), '*')].collect do |file|
       File.directory?(file) ? file.pathmap('%X').ext('json') : file
-    end.uniq
+    end.uniq.include file.pathmap('%X')
   } do |t|
 
+    t.sources.pop
+
     puts "Assembling #{t.name} from #{t.sources}"   
+    
     File.open(t.name, 'w') do |file|
             
       document = t.sources.collect do |path| 

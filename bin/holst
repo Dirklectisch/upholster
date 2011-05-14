@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require 'rake'
+require 'yaml'
 
 # Parse command line options
 arguments = ARGV
@@ -8,6 +9,12 @@ target = arguments.shift || nil
 
 # Load Rakefiles
 FileList[File.join(File.dirname(__FILE__), '..', 'tasks', '*')].each {|tf| load tf }
+
+# Load configuration files
+CONFIG = FileList[File.join('config', '*.yml')].inject({}) do |config, path|
+  config[path.pathmap('%n')] = YAML.load(File.read(path))
+  config
+end
 
 pwd = Dir.pwd
 
