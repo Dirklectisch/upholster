@@ -37,27 +37,31 @@ CLEAN.include FileList[File.join('**', '*.json')]
 
 desc "Assemble a JSON file from source directory"
 rule '.json' => lambda {|file| 
-    FileList[File.join(file.pathmap('%X'), '*')].collect do |file|
-      File.directory?(file) ? file.pathmap('%X').ext('json') : file
-    end.uniq.include file.pathmap('%X')
+  FileList[File.join(file.pathmap('%X'), '**', '*'), file.pathmap('%X')]
   } do |t|
-
-    t.sources.pop
-
-    puts "Assembling #{t.name} from #{t.sources}"   
+  
+  # Determine actual source files (instead of all prerequisites)
+  t.sources = FileList[File.join(t.name.pathmap('%X'), '*')].map do |src|
+    File.directory?(src) ? src.pathmap('%X').ext('json') : src
+  end.uniq
+        
+  # Make sure all source file tasks are being invoked
+  t.sources.each {|src| Rake::Task[src].invoke}
+  
+  puts "Assembling #{t.name} from #{t.sources}" 
     
-    File.open(t.name, 'w') do |file|
-            
-      document = t.sources.collect do |path| 
-        [path.pathmap('%x'), path.pathmap('%n'), File.read(path)]
-      end.inject({}) do |doc, src| 
-        src[2] = Yajl::Parser.parse(src[2]) if src[0] == '.json'
-        doc[src[1]] = src[2]
-        doc
-      end
-      
-      json_encoder = Yajl::Encoder.new :pretty => true
-      json_encoder.encode(document, file)
-      
-    end    
+  File.open(t.name, 'w') do |file|
+          
+    document = t.sources.collect do |path| 
+      [path.pathmap('%x'), path.pathmap('%n'), File.read(path)]
+    end.inject({}) do |doc, src| 
+      src[2] = Yajl::Parser.parse(src[2]) if src[0] == '.json'
+      doc[src[1]] = src[2]
+      doc
+    end
+    
+    json_encoder = Yajl::Encoder.new :pretty => true
+    json_encoder.encode(document, file)
+    
+  end
 end

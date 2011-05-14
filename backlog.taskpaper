@@ -4,7 +4,7 @@ Backlog:
 		- Initialize a new design document @done(2011-05-12)
 		- Invoke build tasks from any folder on disk @done(2011-05-12)
 		- Use path of execution as default target @done(2011-05-12)
-		- Update .json render when src file is removed
+		- Update .json render when src file is removed @done(2011-05-14)
 		- Configure .json encoding settings
 	- Publish design document to a database instance
 		- Initialize a new database @done(2011-05-12)
@@ -12,7 +12,7 @@ Backlog:
 		- Update the design document @done(2011-05-12)
 		- Publish document from outside design source directory @done(2011-05-12)
 		- Configure a target host / database @done(2011-05-14)
-		- Improved updating of document revision
+		- Improved updating of document revision @done(2011-05-14)
 		- Conditional update for CouchDB documents
 		- Clean / Clobber tasks for CouchDB resources
 	- Command Line Interface
