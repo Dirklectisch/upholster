@@ -5,6 +5,7 @@ Backlog:
 		- Invoke build tasks from any folder on disk @done(2011-05-12)
 		- Use path of execution as default target @done(2011-05-12)
 		- Update .json render when src file is removed
+		- Configure .json encoding settings
 	- Publish design document to a database instance
 		- Initialize a new database @done(2011-05-12)
 		- Publish the design document @done(2011-05-12)
@@ -13,5 +14,8 @@ Backlog:
 		- Configure a target host / database
 		- Conditional update for CouchDB documents
 		- Clean / Clobber tasks for CouchDB resources
+	- Command Line Interface
+		- Simplified option parsing @done(2011-05-14)
+		- Man page / Help options
 	- Compile templates to display (show/list) functions
 
