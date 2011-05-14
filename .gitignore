@@ -1,3 +1,4 @@
 example/
 bin/SoyToJsSrcCompiler.jar
 bin/soyutils.js
+.DS_store

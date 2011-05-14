@@ -3,12 +3,12 @@ require 'rake/resource_task'
 require 'yajl'
 require 'rufus-verbs'
 
-CLEAN.include File.join('render', '_rev.txt')
+CLOBBER.include File.join('render', '_rev.txt')
 
 include Rufus::Verbs
 
 task :publish, [:database] do |t, args|
-  args.with_defaults :database => CONFIG['database'][:default] #'http://dirklectisch.iriscouch.com/example'
+  args.with_defaults :database => CONFIG['database'][:default]
   design_doc = args.database + '/_design/' + File.expand_path(Dir.pwd).pathmap('%n')
   
   resource args.database do |rt|
@@ -17,7 +17,20 @@ task :publish, [:database] do |t, args|
     if resp.code.to_i == 201
       puts "Database #{rt.name} Created"
     else
-      puts "Database not created #{resp.code.to_i}"
+      puts "Database not created. (Error Code: #{resp.code.to_i})"
+    end
+  end
+  
+  file 'render/_rev' => args.database do |ft|
+    puts "Updating document revision (#{ft.name})"
+    resp = head(design_doc)
+    case resp.code.to_i
+    when 200      
+      _rev = resp.header['Etag']
+      File.open(File.join('render', '_rev.txt'), 'w'){|f| f.write _rev.slice(1, 34)}
+      puts "Revision updated (_rev: #{_rev})"
+    else
+      puts "Document #{design_doc} not found"
     end
   end
   
@@ -27,14 +40,13 @@ task :publish, [:database] do |t, args|
       request['content-type'] = 'application/json'
       File.read('render.json')
     end
-    if resp.code.to_i == 201
-      _rev = resp.header['Etag']
-      File.open(File.join('render', '_rev.txt'), 'w'){|f| f.write _rev.slice(1, 34)}
-      puts "Design document updated (_rev: #{_rev})"
-    elsif resp.code.to_i == 409
-      _rev = head(rt.name).header['Etag']
-      File.open(File.join('render', '_rev.txt'), 'w'){|f| f.write _rev.slice(1, 34)}
-      puts "Update conflict saved new revision number (_rev: #{_rev})"
+    case resp.code.to_i
+    when 201
+      Rake::Task['render/_rev'].invoke
+      puts "Design document updated"
+    when 409
+      puts "Document update conflict"
+      Rake::Task['render/_rev'].invoke
     else 
       puts "Failed to update document (#{resp.code.to_i})"
     end
