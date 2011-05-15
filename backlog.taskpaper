@@ -19,4 +19,5 @@ Backlog:
 		- Simplified option parsing @done(2011-05-14)
 		- Man page / Help options
 	- Compile templates to display (show/list) functions
+		- Configure Closure Template compiler
 
