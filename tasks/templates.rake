@@ -9,15 +9,32 @@ directory 'template'
 desc "Create Closure Template compiler configuration file"
 file File.join('config', 'soy.yml') => 'config' do |t|
   puts "Rendering #{t.name}"
-  database_cfg = {
+  soy_cfg = {
     :jar => File.expand_path(File.join(File.dirname(__FILE__), '..', 'bin', 'SoyToJsSrcCompiler.jar')),
-    :codeStyle => 'concat'
+    :codeStyle => 'stringBuilder'
     }
-  File.open('config/soy.yml', 'w') {|f| f.write database_cfg.to_yaml}  
+  File.open('config/soy.yml', 'w') {|f| f.write soy_cfg.to_yaml}  
+end
+
+desc "Create Closure Javascript compiler configuration file"
+file File.join('config', 'js.yml') => 'config' do |t|
+  puts "Rendering #{t.name}"
+  js_cfg = {
+    :jar => File.expand_path(File.join(File.dirname(__FILE__), '..', 'bin', 'compiler.jar'))
+    }
+  File.open('config/js.yml', 'w') {|f| f.write js_cfg.to_yaml}  
+end
+
+desc "Render a JavaScript file"
+rule Regexp.new(/render\/.*\.js$/) do |t|
+  sh "java -jar #{CONFIG['soy'][:jar]} \
+           --js #{t.source} \
+           --js template/shared/soyutils.js \
+           --js_output_file #{t.name}"
 end
 
 desc "Compile a Closure Template"
-rule '.js' => '.soy' do |t|
+rule Regexp.new(/template\/.*\.js$/) => '.soy' do |t|
   begin
     sh "java -jar #{CONFIG['soy'][:jar]} --codeStyle #{CONFIG['soy'][:codeStyle]} --outputPathFormat #{t.name} #{t.source}"
   rescue Exception => e

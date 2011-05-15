@@ -19,5 +19,10 @@ Backlog:
 		- Simplified option parsing @done(2011-05-14)
 		- Man page / Help options
 	- Compile templates to display (show/list) functions
-		- Configure Closure Template compiler
+		- Create a DRY rule for configuration file generation
+		- Compile .soy template
+		- Export template function for rendering of response body
+		- Compile .js template functions to a single file
+		- Include template file into show function
+		- Automatic preview of templates in browser
 
