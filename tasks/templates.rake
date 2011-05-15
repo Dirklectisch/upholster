@@ -33,11 +33,19 @@ rule Regexp.new(/render\/.*\.js$/) do |t|
            --js_output_file #{t.name}"
 end
 
-desc "Compile a Closure Template"
+desc "Compile a .soy Closure Template"
 rule Regexp.new(/template\/.*\.js$/) => '.soy' do |t|
+  puts "Compiling #{t.name} template"
   begin
     sh "java -jar #{CONFIG['soy'][:jar]} --codeStyle #{CONFIG['soy'][:codeStyle]} --outputPathFormat #{t.name} #{t.source}"
   rescue Exception => e
     e.message
+  end
+  
+  mime_type = 'html'
+  
+  File.open(t.name, 'a') do |f|
+    f.puts "var templates = {};"
+    f.puts "templates['#{mime_type}'] = #{mime_type}.body;"
   end
 end

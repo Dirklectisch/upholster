@@ -20,9 +20,10 @@ Backlog:
 		- Man page / Help options
 	- Compile templates to display (show/list) functions
 		- Create a DRY rule for configuration file generation
-		- Compile .soy template
-		- Export template function for rendering of response body
+		- Compile .soy template @done(2011-05-15)
+		- Export template function for rendering of response body @done(2011-05-15)
 		- Compile .js template functions to a single file
 		- Include template file into show function
 		- Automatic preview of templates in browser
+		- Handle different mime-types
 
