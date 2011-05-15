@@ -22,7 +22,7 @@ Backlog:
 		- Create a DRY rule for configuration file generation
 		- Compile .soy template @done(2011-05-15)
 		- Export template function for rendering of response body @done(2011-05-15)
-		- Compile .js template functions to a single file
+		- Stage a set of .js template functions @done(2011-05-15)
 		- Include template file into show function
 		- Automatic preview of templates in browser
 		- Handle different mime-types

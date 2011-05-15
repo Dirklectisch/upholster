@@ -25,15 +25,25 @@ file File.join('config', 'js.yml') => 'config' do |t|
   File.open('config/js.yml', 'w') {|f| f.write js_cfg.to_yaml}  
 end
 
-desc "Render a JavaScript file"
-rule Regexp.new(/render\/.*\.js$/) do |t|
-  sh "java -jar #{CONFIG['soy'][:jar]} \
-           --js #{t.source} \
-           --js template/shared/soyutils.js \
-           --js_output_file #{t.name}"
+desc "Stage a .js template"
+rule Regexp.new(/template\/stage\/[a-z]*_[a-z]*\.js$/) => lambda {|path|
+  md = path.pathmap('%n').match(/([a-z]*)_([a-z]*)$/)
+  FileList[File.join('template', 'shared', 'soyutils.js'), File.join('template', md[1], (md[2] + '.js'))]
+  } do |t|
+
+  puts "Compiling #{t.name}"
+  
+  cmd = ''
+  cmd << "java -jar #{CONFIG['js'][:jar]} "
+  t.sources.each do |js|
+    cmd << "--js #{js} "
+  end
+  cmd << "--js_output_file #{t.name}"
+  
+  sh cmd
 end
 
-desc "Compile a .soy Closure Template"
+desc "Compile a single .soy Closure Template"
 rule Regexp.new(/template\/.*\.js$/) => '.soy' do |t|
   puts "Compiling #{t.name} template"
   begin
@@ -42,10 +52,8 @@ rule Regexp.new(/template\/.*\.js$/) => '.soy' do |t|
     e.message
   end
   
-  mime_type = 'html'
-  
   File.open(t.name, 'a') do |f|
     f.puts "var templates = {};"
-    f.puts "templates['#{mime_type}'] = #{mime_type}.body;"
+    f.puts "templates['html'] = html.template;"
   end
 end
