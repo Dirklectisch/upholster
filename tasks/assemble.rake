@@ -15,6 +15,12 @@ task :assemble => [:init, 'render.json']
 directory 'render'
 directory 'config'
 
+desc "Place a symbolic link to the holst executable"
+rule './holst' => File.expand_path(File.join(File.dirname(__FILE__), '..', 'bin', 'holst')) do |t|
+  puts "Creating symbolic link to executable"
+  sh "ln -s #{t.source} holst"
+end
+
 desc "Render database configuration file"
 file 'config/database.yml' => 'config' do |t|
   puts "Rendering #{t.name}"
