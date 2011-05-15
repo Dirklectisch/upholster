@@ -1,13 +1,16 @@
 require 'rake'
 
 load File.join(File.dirname(__FILE__), 'tasks', 'admin.rake')
-load File.join(File.dirname(__FILE__), 'tasks', 'templates.rake')
 
-file 'bin/SoyToJsSrcCompiler.jar' => :deploy_compiler
-file 'bin/soyutils.js' => :deploy_compiler
+directory 'bin'
+
+file 'bin/SoyToJsSrcCompiler.jar' => :closure_templates
+file 'bin/soyutils.js' => :closure_templates
+file 'bin/compiler.jar' => :closure_compiler
 
 desc "Download and install excutables for compilation of closure templates"  
-task :deploy_compiler do
+task :closure_templates => 'bin' do
+  puts "Installing Closure Template utilities"
   begin
     sh "curl -G http://closure-templates.googlecode.com/files/closure-templates-for-javascript-latest.zip -o closure-templates.zip"
     sh "unzip closure-templates.zip SoyToJsSrcCompiler.jar soyutils.js -d bin"
@@ -16,3 +19,15 @@ task :deploy_compiler do
     e.message
   end
 end
+
+task :closure_compiler do  
+  puts "Installing Closure Compiler utilities"
+  begin
+   sh "curl -G http://closure-compiler.googlecode.com/files/compiler-latest.zip -o closure-compiler.zip"
+   sh "unzip closure-compiler.zip compiler.jar -d bin"
+   sh "rm closure-compiler.zip"
+  rescue Exception => e
+    e.message
+  end 
+end
+  
