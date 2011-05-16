@@ -6,6 +6,7 @@ Backlog:
 		- Use path of execution as default target @done(2011-05-12)
 		- Update .json render when src file is removed @done(2011-05-14)
 		- Configure .json encoding settings
+		- Apply whitepsace optimazation when including JavaScript in design doc
 	- Publish design document to a database instance
 		- Initialize a new database @done(2011-05-12)
 		- Publish the design document @done(2011-05-12)
@@ -24,6 +25,10 @@ Backlog:
 		- Export template function for rendering of response body @done(2011-05-15)
 		- Stage a set of .js template functions @done(2011-05-15)
 		- Include template file into show function
-		- Automatic preview of templates in browser
+		- Make HTTP request data available to templates
+		- Preview of templates in browser
+			- Install spidermonkey if not available
+			- Render template preview without any input
+			- Preview rendered template including test input
 		- Handle different mime-types
 

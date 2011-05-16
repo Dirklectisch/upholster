@@ -57,3 +57,21 @@ rule Regexp.new(/template\/.*\.js$/) => '.soy' do |t|
     f.puts "templates['html'] = html.template;"
   end
 end
+
+desc "Preview rendered template in a browser"
+task :preview, [:template] do |t, args|
+  raise ArgumentError, "Incorrect template argument" if !args.template.match(/_show\/[a-z]*$/)
+  
+  # _show/name
+  template_name = args.template.sub('_', '').sub('/', 's_')
+  template_file = File.join('template', 'stage', template_name.concat('.js'))
+  output_file = template_file.ext('html')
+  Rake::Task[template_file].invoke
+  
+  begin
+    sh "js -e \"var navigator={userAgent: \\\"\\\"};\" -f #{template_file} -e \"var doc = {}; print(templates.html(doc));\" > #{output_file}"
+    sh "open #{output_file}"
+  rescue Exception => e
+    e.message
+  end  
+end
