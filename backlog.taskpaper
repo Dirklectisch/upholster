@@ -6,7 +6,7 @@ Backlog:
 		- Use path of execution as default target @done(2011-05-12)
 		- Update .json render when src file is removed @done(2011-05-14)
 		- Configure .json encoding settings
-		- Apply whitepsace optimazation when including JavaScript
+		- Apply whitepsace optimization when including JavaScript
 	- Publish design document to a database instance
 		- Initialize a new database @done(2011-05-12)
 		- Publish the design document @done(2011-05-12)
@@ -29,11 +29,12 @@ Backlog:
 		- Define template export functions in seperate file @done(2011-05-17)
 		- Configure soy template compilation flags @done(2011-05-18)
 		- Customized soyutils.js for server side use (no browser checks) @done(2011-05-18)
-		- Preview of templates in browser
-			- Install spidermonkey if not available
-			- Render template preview without any input @done(2011-05-16)
-			- Preview rendered template including test input
+		- Configure Closure Compiler flags @done(2011-05-18)
 		- Include template file into show function
 		- Make HTTP request data available to templates
 		- Handle different mime-types
+	- Preview of templates in browser
+		- Install spidermonkey if not available
+		- Render template preview without any input @done(2011-05-16)
+		- Preview rendered template including test input
 

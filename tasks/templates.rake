@@ -31,17 +31,22 @@ file File.join('config', 'js.yml') => 'config' do |t|
   File.open('config/js.yml', 'w') {|f| f.write js_cfg.to_yaml}  
 end
 
-desc "Stage a Javascript template"
+desc "Rephrase a set of Javascript template functions"
 rule Regexp.new(/stage\/[a-z]*_[a-z]*\.js$/) => lambda {|path|
   md = path.pathmap('%n').match(/([a-z]*)_([a-z]*)$/)
-  FileList[File.join('template', 'shared', 'soyutils.js')] +
+  FileList[File.join('template', 'shared', 'srvsoyutils.js')] +
   FileList[File.join('template', md[1], md[2] + '*')].pathmap('%X%{.*,.js}x').uniq
   } do |t|
 
   puts "Staging #{t.name} JavaScript template from #{t.sources}"
   
-  cmd = ''
-  cmd << "java -jar #{CONFIG['js'][:jar]} "
+  options = CONFIG['js'].dup
+  
+  cmd = String.new
+  cmd << "java -jar #{options.shift[1]} "
+  options.each do |opt|
+    cmd << "--#{opt.first} #{opt.last} "
+  end
   t.sources.each do |js|
     cmd << "--js #{js} "
   end
@@ -50,7 +55,7 @@ rule Regexp.new(/stage\/[a-z]*_[a-z]*\.js$/) => lambda {|path|
   sh cmd
 end
 
-desc "Render a single .soy Closure Template"
+desc "Compile a single .soy Closure Template"
 rule Regexp.new(/template\/.*\.js$/) => '.soy' do |t|
   
   options = CONFIG['soy'].dup
@@ -81,7 +86,7 @@ task :preview, [:template] do |t, args|
   Rake::Task[template_file].invoke
   
   begin
-    sh "js -e \"var navigator={userAgent: \\\"\\\"};\" -f #{template_file} -e \"var opt_data = {}; print(templates.html(opt_data));\" > #{output_file}"
+    sh "js -f #{template_file} -e \"var opt_data = {}; print(html.template(opt_data));\" > #{output_file}"
     sh "open #{output_file}"
   rescue Exception => e
     e.message
