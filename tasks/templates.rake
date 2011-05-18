@@ -12,6 +12,11 @@ rule Regexp.new(/.*template\/shared\/srvsoyutils.js/) => File.expand_path(File.j
   sh "cp #{t.source} #{t.name}"
 end
 
+desc "Initialize default show function wrapper"
+rule 'stage/output_wrapper_shows.js' => File.expand_path(File.join(File.dirname(__FILE__), '..', 'defaults', 'stage_output_wrapper_shows.js')) do |t|
+  sh "cp #{t.source} #{t.name}"
+end
+
 desc "Create Closure Template compiler configuration file"
 file File.join('config', 'soy.yml') => 'config' do |t|
   puts "Rendering #{t.name}"
@@ -75,6 +80,22 @@ rule Regexp.new(/template\/.*\.js$/) => '.soy' do |t|
   end
 end
 
+desc "Wrap a staged JS template in a show function"
+rule Regexp.new(/render\/shows\/.*\.js$/) => lambda {|path|
+  FileList['stage/shows_' + path.pathmap('%f'), 'stage/output_wrapper_shows.js']
+  } do |t|
+  
+  puts "Wrapping #{t.sources[0]} using #{t.sources[1]} into #{t.name}"
+  
+  template = File.read(t.sources[0])
+  wrapper = File.read(t.sources[1])
+  
+  wrapper['%output%'] = template
+  
+  File.open(t.name, 'w') {|file| file.write wrapper}
+  
+end
+
 desc "Preview rendered template in a browser"
 task :preview, [:template] do |t, args|
   raise ArgumentError, "Incorrect template name" if !args.template.match(/_show\/[a-z]*$/)
@@ -86,7 +107,7 @@ task :preview, [:template] do |t, args|
   Rake::Task[template_file].invoke
   
   begin
-    sh "js -f #{template_file} -e \"var opt_data = {}; print(html.template(opt_data));\" > #{output_file}"
+    sh "js -f #{template_file} -e \"var opt_data = {req: {path: ['a', 'b']}, doc: {}}; print(html.template(opt_data));\" > #{output_file}"
     sh "open #{output_file}"
   rescue Exception => e
     e.message

@@ -30,7 +30,7 @@ Backlog:
 		- Configure soy template compilation flags @done(2011-05-18)
 		- Customized soyutils.js for server side use (no browser checks) @done(2011-05-18)
 		- Configure Closure Compiler flags @done(2011-05-18)
-		- Include template file into show function
+		- Wrap template file into show function @done(2011-05-19)
 		- Make HTTP request data available to templates
 		- Handle different mime-types
 	- Preview of templates in browser
