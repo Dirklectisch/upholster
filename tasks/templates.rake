@@ -2,9 +2,8 @@ require 'rake'
 require 'rake/clean'
 require 'yaml'
 
-CLEAN.include(File.join('**', 'template', '*.js'))
-
 directory 'template'
+directory 'stage'
 
 desc "Create Closure Template compiler configuration file"
 file File.join('config', 'soy.yml') => 'config' do |t|
@@ -25,13 +24,14 @@ file File.join('config', 'js.yml') => 'config' do |t|
   File.open('config/js.yml', 'w') {|f| f.write js_cfg.to_yaml}  
 end
 
-desc "Stage a .js template"
-rule Regexp.new(/template\/stage\/[a-z]*_[a-z]*\.js$/) => lambda {|path|
+desc "Stage a Javascript template"
+rule Regexp.new(/stage\/[a-z]*_[a-z]*\.js$/) => lambda {|path|
   md = path.pathmap('%n').match(/([a-z]*)_([a-z]*)$/)
-  FileList[File.join('template', 'shared', 'soyutils.js'), File.join('template', md[1], (md[2] + '.js'))]
+  FileList[File.join('template', 'shared', 'soyutils.js')] +
+  FileList[File.join('template', md[1], md[2] + '*')].pathmap('%X%{.*,.js}x').uniq
   } do |t|
 
-  puts "Compiling #{t.name}"
+  puts "Staging #{t.name} JavaScript template from #{t.sources}"
   
   cmd = ''
   cmd << "java -jar #{CONFIG['js'][:jar]} "
@@ -43,33 +43,38 @@ rule Regexp.new(/template\/stage\/[a-z]*_[a-z]*\.js$/) => lambda {|path|
   sh cmd
 end
 
-desc "Compile a single .soy Closure Template"
+desc "Render a single .soy Closure Template"
 rule Regexp.new(/template\/.*\.js$/) => '.soy' do |t|
+  
+  options = CONFIG['soy'].dup
+  
+  cmd = String.new
+  cmd << "java -jar #{options.shift[1]} "
+  options.each do |opt|
+    cmd << "--#{opt.first} #{opt.last} "
+  end
+  cmd << "--outputPathFormat #{t.name} #{t.source}"
+  
   puts "Compiling #{t.name} template"
   begin
-    sh "java -jar #{CONFIG['soy'][:jar]} --codeStyle #{CONFIG['soy'][:codeStyle]} --outputPathFormat #{t.name} #{t.source}"
+    sh cmd
   rescue Exception => e
     e.message
-  end
-  
-  File.open(t.name, 'a') do |f|
-    f.puts "var templates = {};"
-    f.puts "templates['html'] = html.template;"
   end
 end
 
 desc "Preview rendered template in a browser"
 task :preview, [:template] do |t, args|
-  raise ArgumentError, "Incorrect template argument" if !args.template.match(/_show\/[a-z]*$/)
+  raise ArgumentError, "Incorrect template name" if !args.template.match(/_show\/[a-z]*$/)
   
-  # _show/name
+  # _show/name/stub
   template_name = args.template.sub('_', '').sub('/', 's_')
-  template_file = File.join('template', 'stage', template_name.concat('.js'))
+  template_file = File.join('stage', template_name.concat('.js'))
   output_file = template_file.ext('html')
   Rake::Task[template_file].invoke
   
   begin
-    sh "js -e \"var navigator={userAgent: \\\"\\\"};\" -f #{template_file} -e \"var doc = {}; print(templates.html(doc));\" > #{output_file}"
+    sh "js -e \"var navigator={userAgent: \\\"\\\"};\" -f #{template_file} -e \"var opt_data = {}; print(templates.html(opt_data));\" > #{output_file}"
     sh "open #{output_file}"
   rescue Exception => e
     e.message

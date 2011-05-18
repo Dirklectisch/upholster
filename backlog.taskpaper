@@ -6,7 +6,7 @@ Backlog:
 		- Use path of execution as default target @done(2011-05-12)
 		- Update .json render when src file is removed @done(2011-05-14)
 		- Configure .json encoding settings
-		- Apply whitepsace optimazation when including JavaScript in design doc
+		- Apply whitepsace optimazation when including JavaScript
 	- Publish design document to a database instance
 		- Initialize a new database @done(2011-05-12)
 		- Publish the design document @done(2011-05-12)
@@ -14,6 +14,8 @@ Backlog:
 		- Publish document from outside design source directory @done(2011-05-12)
 		- Configure a target host / database @done(2011-05-14)
 		- Improved updating of document revision @done(2011-05-14)
+		- Better exception handling for design doc publication
+		- Make sure document render is up to date before publication
 		- Conditional update for CouchDB documents
 		- Clean / Clobber tasks for CouchDB resources
 	- Command Line Interface
@@ -24,11 +26,13 @@ Backlog:
 		- Compile .soy template @done(2011-05-15)
 		- Export template function for rendering of response body @done(2011-05-15)
 		- Stage a set of .js template functions @done(2011-05-15)
-		- Include template file into show function
-		- Make HTTP request data available to templates
+		- Define template export functions in seperate file @done(2011-05-17)
+		- Configure soy template compilation flags
 		- Preview of templates in browser
 			- Install spidermonkey if not available
-			- Render template preview without any input
+			- Render template preview without any input @done(2011-05-16)
 			- Preview rendered template including test input
+		- Include template file into show function
+		- Make HTTP request data available to templates
 		- Handle different mime-types
 
