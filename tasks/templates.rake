@@ -2,8 +2,15 @@ require 'rake'
 require 'rake/clean'
 require 'yaml'
 
+BASE_FILES.include FileList[File.join('config', 'soy.yml'), File.join('template', 'shared', 'srvsoyutils.js')]
+
 directory 'template'
 directory 'stage'
+
+desc "Initialize server-side .soy template utilities"
+rule Regexp.new(/.*template\/shared\/srvsoyutils.js/) => File.expand_path(File.join(File.dirname(__FILE__), '..', 'bin', 'srvsoyutils.js')) do |t|
+  sh "cp #{t.source} #{t.name}"
+end
 
 desc "Create Closure Template compiler configuration file"
 file File.join('config', 'soy.yml') => 'config' do |t|
