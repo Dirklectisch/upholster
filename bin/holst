@@ -8,7 +8,8 @@ task = arguments.shift
 target = arguments.shift || nil
 
 # Load Rakefiles
-FileList[File.join(File.dirname(__FILE__), '..', 'tasks', '*')].each {|tf| load tf }
+bin_dir = File.symlink?(__FILE__) ? File.dirname(File.readlink(__FILE__)) : File.dirname(__FILE__)
+FileList[File.expand_path(File.join(bin_dir, '..', 'tasks', '*'))].each {|tf| load tf }
 
 # Load configuration files
 CONFIG = FileList[File.join('config', '*.yml')].inject({}) do |config, path|
@@ -18,8 +19,8 @@ end
 
 pwd = Dir.pwd
 
-if task == 'init' && !Dir.exist?(target)
-  Dir.mkdir(target)
+if task == 'init' 
+  Dir.mkdir(target) if !Dir.exist?(target)
   pwd = File.expand_path(target)
 end  
 
