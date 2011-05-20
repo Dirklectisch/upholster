@@ -6,18 +6,20 @@ require 'yaml'
 BASE_FILES = FileList[
   'config',
   File.join('config', 'database.yml'),
-  'render',
-  File.join('render', '_id.txt')]
+  'source',
+  File.join('source', '_id.txt')]
 
 CLOBBER.include BASE_FILES
 
 desc "Initialize new design document directory"
 task :init => BASE_FILES
 
-desc "Assemble renders into design document"
-task :assemble => [:init, 'render.json']
+CLEAN.include 'source.json'
 
-directory 'render'
+desc "Assemble sources into design document"
+task :assemble => [:init, 'source.json']
+
+directory 'source'
 directory 'config'
 
 desc "Place a symbolic link to the holst executable"
@@ -34,7 +36,7 @@ file 'config/database.yml' => 'config' do |t|
 end
 
 desc "Render design document _id header element"
-rule 'render/_id.txt' do |t|
+rule 'source/_id.txt' do |t|
   
   puts "Rendering #{t.name}"
   File.open(t.name, 'w') do |f|
@@ -44,7 +46,7 @@ rule 'render/_id.txt' do |t|
   
 end
 
-CLEAN.include FileList[File.join('**', '*.json')]
+CLEAN.include FileList[File.join('source', '**', '*.json')]
 
 desc "Assemble a JSON file from source directory"
 rule '.json' => lambda {|file| 

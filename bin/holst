@@ -19,9 +19,11 @@ end
 
 pwd = Dir.pwd
 
-if task == 'init' 
-  Dir.mkdir(target) if !Dir.exist?(target)
-  pwd = File.expand_path(target)
+case 
+when task == 'init' && !Dir.exist?(target || '.')
+  Dir.mkdir(target)
+when task == 'init' 
+  pwd = File.expand_path(target || '.')
 end  
 
 Dir.chdir(pwd) do
