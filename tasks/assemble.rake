@@ -3,7 +3,12 @@ require 'rake/clean'
 require 'yajl'
 require 'yaml'
 
-BASE_FILES = FileList['render', 'config', File.join('config', 'database.yml'), File.join('render', '_id.txt')]
+BASE_FILES = FileList[
+  'config',
+  File.join('config', 'database.yml'),
+  'render',
+  File.join('render', '_id.txt')]
+
 CLOBBER.include BASE_FILES
 
 desc "Initialize new design document directory"
@@ -29,7 +34,7 @@ file 'config/database.yml' => 'config' do |t|
 end
 
 desc "Render design document _id header element"
-rule '_id.txt' do |t|
+rule 'render/_id.txt' do |t|
   
   puts "Rendering #{t.name}"
   File.open(t.name, 'w') do |f|
@@ -62,6 +67,7 @@ rule '.json' => lambda {|file|
       [path.pathmap('%x'), path.pathmap('%n'), File.read(path)]
     end.inject({}) do |doc, src| 
       src[2] = Yajl::Parser.parse(src[2]) if src[0] == '.json'
+      #src[2] = src[2].gsub(/\s/,  '') if src[0] == '.js'
       doc[src[1]] = src[2]
       doc
     end
