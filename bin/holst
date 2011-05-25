@@ -22,6 +22,7 @@ pwd = Dir.pwd
 case 
 when task == 'init' && !Dir.exist?(target || '.')
   Dir.mkdir(target)
+  pwd = File.expand_path(target || '.')
 when task == 'init' 
   pwd = File.expand_path(target || '.')
 end  
