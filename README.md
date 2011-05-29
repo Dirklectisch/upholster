@@ -39,7 +39,7 @@ A CouchDB _design/ document is a JSON file containing application logic. Editing
     
 The 'init' command takes a directory name as an argument which will be the root directory to your _design/ document project. As you can see the ./exampp directory contains a subdirectory ./source. That directory is particularly important because it contains the sources that will be serialized to the JSON _design/ document. Let's try that out.
 
-    $ echo javascript > ./source/language.txt
+    $ printf "javascript" > ./source/language.txt
     $ holst assemble
     > Assembling source.json from source/_id.txt source/language.txt
   
