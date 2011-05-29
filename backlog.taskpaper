@@ -5,6 +5,7 @@ Backlog:
 		- Invoke build tasks from any folder on disk @done(2011-05-12)
 		- Use path of execution as default target @done(2011-05-12)
 		- Update .json render when src file is removed @done(2011-05-14)
+		- Fixed bug with _id.txt creation on init @done(2011-05-20)
 		- Configure .json encoding settings
 		- Apply whitepsace optimization when including JavaScript
 	- Publish design document to a database instance
@@ -14,6 +15,7 @@ Backlog:
 		- Publish document from outside design source directory @done(2011-05-12)
 		- Configure a target host / database @done(2011-05-14)
 		- Improved updating of document revision @done(2011-05-14)
+		- Fix bug with publishing revision numbers above 9
 		- Better exception handling for design doc publication
 		- Make sure document render is up to date before publication
 		- Conditional update for CouchDB documents
@@ -21,6 +23,7 @@ Backlog:
 	- Command Line Interface
 		- Simplified option parsing @done(2011-05-14)
 		- Man page / Help options
+		- Catch incorrect commands @done(2011-05-30)
 	- Compile templates to display (show/list) functions
 		- Create a DRY rule for configuration file generation
 		- Compile .soy template @done(2011-05-15)
@@ -33,8 +36,13 @@ Backlog:
 		- Wrap template file into show function @done(2011-05-19)
 		- Make HTTP request data available to templates
 		- Handle different mime-types
+		- Break on compilation errors
 	- Preview of templates in browser
 		- Install spidermonkey if not available
 		- Render template preview without any input @done(2011-05-16)
 		- Preview rendered template including test input
+	- Documentation
+		- Roadmap update
+		- Installation instructions @done(2011-05-30)
+		- "How to assemble a design document" tutorial @done(2011-05-30)
 

@@ -34,4 +34,4 @@ Dir.chdir(pwd) do
     puts e.message
     puts e.backtrace
   end
-end
+end unless ARGV.size == 0
