@@ -25,6 +25,8 @@ when task == 'init' && !Dir.exist?(target || '.')
   pwd = File.expand_path(target || '.')
 when task == 'init' 
   pwd = File.expand_path(target || '.')
+when task == nil
+  puts "{\"upholster\": \"version\": \"0.1.0\"}"  
 end  
 
 Dir.chdir(pwd) do
@@ -32,6 +34,6 @@ Dir.chdir(pwd) do
     Rake::Task[task].invoke((target unless nil))
   rescue Exception => e
     puts e.message
-    puts e.backtrace
+    # puts e.backtrace
   end
-end unless ARGV.size == 0
+end unless task == nil
