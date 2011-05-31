@@ -23,6 +23,7 @@ Installation of upholster is very simple, but you will need to take care of inst
 Copy the source code to a folder of your choice.
 
     $ git clone git://github.com/Dirklectisch/upholster.git
+    $ git checkout v0.1.0
 
 Create a symbolic link to the ./upholster/bin/holst executable somewhere within your load path.
 

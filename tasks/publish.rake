@@ -3,11 +3,11 @@ require 'rake/resource_task'
 require 'yajl'
 require 'rufus-verbs'
 
-CLOBBER.include File.join('render', '_rev.txt')
+CLOBBER.include File.join('source', '_rev.txt')
 
 include Rufus::Verbs
 
-task :publish, [:database] do |t, args|
+task :publish, [:database] => 'source.json' do |t, args|
   args.with_defaults :database => CONFIG['database'][:default]
   design_doc = args.database + '/_design/' + File.expand_path(Dir.pwd).pathmap('%n')
   
@@ -21,32 +21,32 @@ task :publish, [:database] do |t, args|
     end
   end
   
-  file 'render/_rev' => args.database do |ft|
+  file 'source/_rev' => args.database do |ft|
     puts "Updating document revision (#{ft.name})"
     resp = head(design_doc)
     case resp.code.to_i
     when 200      
       _rev = resp.header['Etag']
-      File.open(File.join('render', '_rev.txt'), 'w'){|f| f.write _rev.slice(1, 34)}
+      File.open(File.join('source', '_rev.txt'), 'w'){|f| f.write _rev.match(/\d+-\w+/)}
       puts "Revision updated (_rev: #{_rev})"
     else
       puts "Document #{design_doc} not found"
     end
   end
   
-  resource design_doc => ['render.json', args.database] do |rt|
+  resource design_doc => ['source.json', args.database] do |rt|
     puts "Updating design document #{rt.name}"
     resp = put(rt.name) do |request|
       request['content-type'] = 'application/json'
-      File.read('render.json')
+      File.read('source.json')
     end
     case resp.code.to_i
     when 201
-      Rake::Task['render/_rev'].invoke
       puts "Design document updated"
+      Rake::Task['source/_rev'].invoke
     when 409
       puts "Document update conflict"
-      Rake::Task['render/_rev'].invoke
+      Rake::Task['source/_rev'].invoke
     else 
       puts "Failed to update document (#{resp.code.to_i})"
     end
