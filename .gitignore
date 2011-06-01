@@ -1,4 +1,4 @@
-example/
+examples/
 bin/SoyToJsSrcCompiler.jar
 bin/soyutils.js
 bin/compiler.jar
