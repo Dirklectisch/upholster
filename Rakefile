@@ -20,6 +20,7 @@ task :closure_templates => 'bin' do
   end
 end
 
+desc "Download and install excutables for compilation of closure templates"
 task :closure_compiler do  
   puts "Installing Closure Compiler utilities"
   begin

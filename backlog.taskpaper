@@ -1,11 +1,5 @@
 Backlog:
 	- Assemble a design document from separate files
-		- Assemble directories into JSON document @done(2011-05-05)
-		- Initialize a new design document @done(2011-05-12)
-		- Invoke build tasks from any folder on disk @done(2011-05-12)
-		- Use path of execution as default target @done(2011-05-12)
-		- Update .json render when src file is removed @done(2011-05-14)
-		- Fixed bug with _id.txt creation on init @done(2011-05-20)
 		- Configure .json encoding settings
 		- Apply whitepsace optimization when including JavaScript
 	- Publish design document to a database instance
@@ -16,14 +10,13 @@ Backlog:
 		- Configure a target host / database @done(2011-05-14)
 		- Improved updating of document revision @done(2011-05-14)
 		- Fix bug with publishing revision numbers above 9 @done(2011-05-31)
+		- Remove _rev if design doc is removed from server
 		- Better exception handling for design doc publication
 		- Make sure document render is up to date before publication
 		- Conditional update for CouchDB documents
 		- Clean / Clobber tasks for CouchDB resources
 	- Command Line Interface
-		- Simplified option parsing @done(2011-05-14)
 		- Man page / Help options
-		- Catch incorrect commands @done(2011-05-30)
 	- Compile templates to display (show/list) functions
 		- Create a DRY rule for configuration file generation
 		- Compile .soy template @done(2011-05-15)
@@ -44,6 +37,28 @@ Backlog:
 	- Documentation
 		- Roadmap update
 		- Make design goals more explicit
-		- Installation instructions @done(2011-05-30)
-		- "How to assemble a design document" tutorial @done(2011-05-30)
 
+Example Apps:
+	Rolodex:
+		- Bind correct update handler action and method to form @done(2011-06-01)
+		- Recognize numbers in form data
+		- Display results after succesfull document update
+		- Handle nested fields
+		- Handle optional fields
+		- Handle hCards
+		- Data type validators
+Release History:
+	v0.1.0:
+		- Assemble a design document from separate files @done(2011-06-01)
+			- Assemble directories into JSON document @done(2011-05-05)
+			- Initialize a new design document @done(2011-05-12)
+			- Invoke build tasks from any folder on disk @done(2011-05-12)
+			- Use path of execution as default target @done(2011-05-12)
+			- Update .json render when src file is removed @done(2011-05-14)
+			- Fixed bug with _id.txt creation on init @done(2011-05-20)
+		- Command Line Interface @done(2011-06-01)
+			- Simplified option parsing @done(2011-05-14)
+			- Catch incorrect commands @done(2011-05-30)
+		- Documentation @done(2011-06-01)
+			- Installation instructions @done(2011-05-30)
+			- "How to assemble a design document" tutorial @done(2011-05-30)

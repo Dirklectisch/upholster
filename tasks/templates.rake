@@ -80,21 +80,21 @@ rule Regexp.new(/template\/.*\.js$/) => '.soy' do |t|
   end
 end
 
-desc "Wrap a staged JS template in a show function"
-rule Regexp.new(/render\/shows\/.*\.js$/) => lambda {|path|
-  FileList['stage/shows_' + path.pathmap('%f'), 'stage/output_wrapper_shows.js']
-  } do |t|
-  
-  puts "Wrapping #{t.sources[0]} using #{t.sources[1]} into #{t.name}"
-  
-  template = File.read(t.sources[0])
-  wrapper = File.read(t.sources[1])
-  
-  wrapper['%output%'] = template
-  
-  File.open(t.name, 'w') {|file| file.write wrapper}
-  
-end
+# desc "Wrap a staged JS template in a show function"
+# rule Regexp.new(/source\/shows\/.*\.js$/) => lambda {|path|
+#   FileList['stage/shows_' + path.pathmap('%f'), 'stage/output_wrapper_shows.js']
+#   } do |t|
+#   
+#   puts "Wrapping #{t.sources[0]} using #{t.sources[1]} into #{t.name}"
+#   
+#   template = File.read(t.sources[0])
+#   wrapper = File.read(t.sources[1])
+#   
+#   wrapper['%output%'] = template
+#   
+#   File.open(t.name, 'w') {|file| file.write wrapper}
+#   
+# end
 
 desc "Preview rendered template in a browser"
 task :preview, [:template] do |t, args|
@@ -106,8 +106,10 @@ task :preview, [:template] do |t, args|
   output_file = template_file.ext('html')
   Rake::Task[template_file].invoke
   
+  stub_file = File.join('stage', 'stub.js')
+  
   begin
-    sh "js -f #{template_file} -e \"var opt_data = {req: {path: ['a', 'b']}, doc: {}}; print(html.template(opt_data));\" > #{output_file}"
+      sh "js -f #{template_file} -f #{stub_file} -e \"print(html.page(opt_data));\" > #{output_file}"
     sh "open #{output_file}"
   rescue Exception => e
     e.message
