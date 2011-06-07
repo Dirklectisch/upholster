@@ -2,6 +2,7 @@ require 'rake'
 require 'rake/clean'
 require 'yaml'
 
+BASE_FILES ||= FileList.new
 BASE_FILES.include FileList[File.join('config', 'soy.yml'), File.join('template', 'shared', 'srvsoyutils.js')]
 
 directory 'template'
