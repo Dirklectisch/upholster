@@ -1,4 +1,5 @@
 require 'rake'
+require 'rake/clean'
 require 'rake/resource_task'
 require 'yajl'
 require 'rufus-verbs'

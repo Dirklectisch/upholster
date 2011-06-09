@@ -3,7 +3,9 @@ require 'rake/clean'
 require 'yajl'
 require 'yaml'
 
-BASE_FILES = FileList[
+BASE_FILES ||= FileList.new
+
+BASE_FILES.include FileList[
   'config',
   File.join('config', 'database.yml'),
   'source',
