@@ -3,22 +3,12 @@ Backlog:
 		- Configure .json encoding settings
 		- Apply whitepsace optimization when including JavaScript
 	- Publish design document to a database instance
-		- Initialize a new database @done(2011-05-12)
-		- Publish the design document @done(2011-05-12)
-		- Update the design document @done(2011-05-12)
-		- Publish document from outside design source directory @done(2011-05-12)
-		- Configure a target host / database @done(2011-05-14)
-		- Improved updating of document revision @done(2011-05-14)
-		- Fix bug with publishing revision numbers above 9 @done(2011-05-31)
-		- Remove _rev if design doc is removed from server
-		- Better exception handling for design doc publication
-		- Make sure document render is up to date before publication
-		- Conditional update for CouchDB documents
-		- Clean / Clobber tasks for CouchDB resources
-	- Command Line Interface
+		- Configure additional deployment databases
+		- Deploy to production DB using COPY verb method
+		- Make sure document get's updated on _rev update conflict
+	-  Command Line Interface
 		- Man page / Help options
 	- Compile templates to display (show/list) functions
-		- Create a DRY rule for configuration file generation
 		- Compile .soy template @done(2011-05-15)
 		- Export template function for rendering of response body @done(2011-05-15)
 		- Stage a set of .js template functions @done(2011-05-15)
@@ -48,6 +38,23 @@ Example Apps:
 		- Handle hCards
 		- Data type validators
 Release History:
+	v0.2.0:
+		- Assemble a design document from separate files @done(2011-06-11)
+			- Load preset file into project @done(2011-06-11)
+			- Create preset destination directory if not present @done(2011-06-11)
+		- Publish design document to a database instance @done(2011-06-11)
+			- Initialize a new database @done(2011-05-12)
+			- Publish the design document @done(2011-05-12)
+			- Update the design document @done(2011-05-12)
+			- Publish document from outside design source directory @done(2011-05-12)
+			- Configure a target host / database @done(2011-05-14)
+			- Improved updating of document revision @done(2011-05-14)
+			- Fix bug with publishing revision numbers above 9 @done(2011-05-31)
+			- Remove _rev if design doc is removed from server @done(2011-06-11)
+		- Documentation @done(2011-06-11)
+			- Clarify terms used in assemble tutorial @done(2011-06-11)
+			- Update prerequisites @done(2011-06-11)
+			- "How to publish a design document" tutorial @done(2011-06-11)
 	v0.1.0:
 		- Assemble a design document from separate files @done(2011-06-01)
 			- Assemble directories into JSON document @done(2011-05-05)
