@@ -30,8 +30,13 @@ task :publish, [:database] => 'source.json' do |t, args|
       _rev = resp.header['Etag']
       File.open(File.join('source', '_rev.txt'), 'w'){|f| f.write _rev.match(/\d+-\w+/)}
       puts "Revision updated (_rev: #{_rev})"
+    when 404
+      puts "Remote document not found, removing local revision number"
+      if File.exist?(File.join('source', '_rev.txt'))
+        File.delete(File.join('source', '_rev.txt'))
+      end
     else
-      puts "Document #{design_doc} not found"
+      puts "Could not determine remote revision"
     end
   end
   
