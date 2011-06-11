@@ -24,12 +24,6 @@ task :assemble => [:init, 'source.json']
 directory 'source'
 directory 'config'
 
-desc "Place a symbolic link to the holst executable"
-rule './holst' => File.expand_path(File.join(File.dirname(__FILE__), '..', 'bin', 'holst')) do |t|
-  puts "Creating symbolic link to executable"
-  sh "ln -s #{t.source} holst"
-end
-
 desc "Render database configuration file"
 file 'config/database.yml' => 'config' do |t|
   puts "Rendering #{t.name}"
@@ -52,9 +46,13 @@ task :preset, [:file] do |t, args|
       raise ArgumentError, "Can not find preset #{presetPath}"
     else
       puts "Loading preset #{args.file}"
+      
+      Dir.exist?(args.file.pathmap('%d')) || Dir.mkdir(args.file.pathmap('%d'))
+      
       File.open(args.file, 'w') do |f|
         f.write(File.read(presetPath))
       end
+      
     end
   else
     puts "\# Available presets"
