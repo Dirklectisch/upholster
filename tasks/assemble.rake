@@ -24,11 +24,9 @@ task :assemble => [:init, 'source.json']
 directory 'source'
 directory 'config'
 
-desc "Render database configuration file"
+desc "Load default database configuration file"
 file 'config/database.yml' => 'config' do |t|
-  puts "Rendering #{t.name}"
-  database_cfg = {:default => 'http://127.0.0.1:5984/upholster'}
-  File.open('config/database.yml', 'w') {|f| f.write database_cfg.to_yaml}
+  Rake::Task[:preset].invoke(t.name)
 end
 
 desc "Load a preset file into project"
