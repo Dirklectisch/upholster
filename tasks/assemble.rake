@@ -37,6 +37,32 @@ file 'config/database.yml' => 'config' do |t|
   File.open('config/database.yml', 'w') {|f| f.write database_cfg.to_yaml}
 end
 
+desc "Load a preset file into project"
+task :preset, [:file] do |t, args|
+  
+  args.with_defaults :file => nil
+
+  this_dir = Proc.new { File.symlink?(__FILE__) ? File.dirname(File.readlink(__FILE__)) : File.dirname(__FILE__) }
+  preset_dir = File.expand_path(File.join(this_dir.call, '..', 'defaults'))
+  
+  unless args.file == nil
+    presetPath = File.join(preset_dir, args.file.pathmap('%{^\.+\/,;\/,_}X%x'))
+  
+    if !File.exist?(presetPath) 
+      raise ArgumentError, "Can not find preset #{presetPath}"
+    else
+      puts "Loading preset #{args.file}"
+      File.open(args.file, 'w') do |f|
+        f.write(File.read(presetPath))
+      end
+    end
+  else
+    puts "\# Available presets"
+    puts FileList[File.join(preset_dir, '*.*')].pathmap('%f').map {|p| p.tr('_', '/')}
+  end  
+
+end
+
 desc "Render design document _id header element"
 rule 'source/_id.txt' do |t|
   
