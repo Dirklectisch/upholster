@@ -1,42 +1,25 @@
 Backlog:
+	- Shortcuts to db pages from the CLI
+		- 'open' command to view a design doc method @next @done(2011-06-13)
+		- Conditional updates of _design document @next
 	- Assemble a design document from separate files
 		- Configure .json encoding settings
 		- Apply whitepsace optimization when including JavaScript
-	- Publish design document to a database instance
+	- Deploy design document to a production database
 		- Configure additional deployment databases
 		- Deploy to production DB using COPY verb method
 		- Make sure document get's updated on _rev update conflict
 	-  Command Line Interface
 		- Man page / Help options
-	- Compile templates to display (show/list) functions
-		- Compile .soy template @done(2011-05-15)
-		- Export template function for rendering of response body @done(2011-05-15)
-		- Stage a set of .js template functions @done(2011-05-15)
-		- Define template export functions in seperate file @done(2011-05-17)
-		- Configure soy template compilation flags @done(2011-05-18)
-		- Customized soyutils.js for server side use (no browser checks) @done(2011-05-18)
-		- Configure Closure Compiler flags @done(2011-05-18)
-		- Wrap template file into show function @done(2011-05-19)
-		- Make HTTP request data available to templates
-		- Handle different mime-types
-		- Break on compilation errors
+		- Load task files on demand
+	- Compile methods using the closure compiler
+		- Load HTML page mockup into js variable
+		- Combine several JS files into a design doc method
 	- Preview of templates in browser
-		- Install spidermonkey if not available
-		- Render template preview without any input @done(2011-05-16)
-		- Preview rendered template including test input
 	- Documentation
 		- Roadmap update
 		- Make design goals more explicit
 
-Example Apps:
-	Rolodex:
-		- Bind correct update handler action and method to form @done(2011-06-01)
-		- Recognize numbers in form data
-		- Display results after succesfull document update
-		- Handle nested fields
-		- Handle optional fields
-		- Handle hCards
-		- Data type validators
 Release History:
 	v0.2.0:
 		- Assemble a design document from separate files @done(2011-06-11)
