@@ -38,7 +38,7 @@ task :preset, [:file] do |t, args|
   preset_dir = File.expand_path(File.join(this_dir.call, '..', 'defaults'))
   
   unless args.file == nil
-    presetPath = File.join(preset_dir, args.file.pathmap('%{^\.+\/,;\/,_}X%x'))
+    presetPath = File.join(preset_dir, args.file.tr('/', '_'))
   
     if !File.exist?(presetPath) 
       raise ArgumentError, "Can not find preset #{presetPath}"
@@ -53,8 +53,8 @@ task :preset, [:file] do |t, args|
       
     end
   else
-    puts "\# Available presets"
-    puts FileList[File.join(preset_dir, '*.*')].pathmap('%f').map {|p| p.tr('_', '/')}
+    puts "\# Available presets \n"
+    puts FileList[File.join(preset_dir, '*.*')].pathmap('%f').map {|p| ' - ' + p.tr('_', '/')}
   end  
 
 end
