@@ -24,13 +24,13 @@ Installation of upholster is very simple, but you will need to take care of inst
 Copy the source code to a folder of your choice.
 
     $ git clone git://github.com/Dirklectisch/upholster.git
-    $ git checkout v0.2.0
+    $ git checkout v0.2.1
 
-Create a symbolic link to the ./upholster/bin/holst executable somewhere within your load path.
+Create a symbolic link to the ./upholster/bin/holst executable somewhere within your load path. Note that both have to be absolute paths for the symbolic link to work.
 
     $ sudo ln -s ~/path/to/repo/upholster/bin/holst /usr/local/bin/holst
     
-Note that both have to be absolute paths for the symbolic link to work. That's it, you are ready to go!
+That's it, you are ready to go!
 
 ## Assembling a _design/ document ##
 
@@ -93,6 +93,11 @@ It also possible to save the address of your CouchDB database in a configuration
     > Updating document revision (source/_rev)
     > Revision updated (_rev: "3-06f1cb52176593a30757644bc41f495a")
     
-Now you can go from editing to viewing with just one command in between. :-)
+There's also a *open* command that let's you view pages in your default browser using an easy shortcut. The open command accepts either a document _id or a sub-path fragment of the design doc URL. For example:
+
+    $ holst open 723db74c7734e9bf2414559163004eee
+    $ holst open _show/hello
+    
+This makes it considerably easier to go between editing and checking the results of you work.
 
 ---

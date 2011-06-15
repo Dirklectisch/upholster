@@ -1,7 +1,8 @@
 Backlog:
-	- Shortcuts to db pages from the CLI
-		- 'open' command to view a design doc method @next @done(2011-06-13)
-		- Conditional updates of _design document @next
+	- Render local preview of design functions
+		- Parse doc / req from server using debug show function
+		- Eval function file
+		- Output render file
 	- Assemble a design document from separate files
 		- Configure .json encoding settings
 		- Apply whitepsace optimization when including JavaScript
@@ -9,18 +10,25 @@ Backlog:
 		- Configure additional deployment databases
 		- Deploy to production DB using COPY verb method
 		- Make sure document get's updated on _rev update conflict
+		- Conditional updates of _design document
 	-  Command Line Interface
 		- Man page / Help options
-		- Load task files on demand
 	- Compile methods using the closure compiler
 		- Load HTML page mockup into js variable
 		- Combine several JS files into a design doc method
-	- Preview of templates in browser
 	- Documentation
 		- Roadmap update
 		- Make design goals more explicit
+		
 
 Release History:
+	v 0.2.1:
+		- 'open' command to view a design doc method @done(2011-06-15)
+		- 'open' command to open by doc _id @done(2011-06-15)
+		- Include debug show in presets @done(2011-06-14)
+		- Automatically create file tasks for preset files if file !exsist @done(2011-06-15)
+		- Described 'open' command @done(2011-06-15)
+		
 	v0.2.0:
 		- Assemble a design document from separate files @done(2011-06-11)
 			- Load preset file into project @done(2011-06-11)
