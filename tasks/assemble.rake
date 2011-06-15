@@ -24,38 +24,26 @@ task :assemble => [:init, 'source.json']
 directory 'source'
 directory 'config'
 
-desc "Load default database configuration file"
-file 'config/database.yml' => 'config' do |t|
-  Rake::Task[:preset].invoke(t.name)
+this_dir = Proc.new { File.symlink?(__FILE__) ? File.dirname(File.readlink(__FILE__)) : File.dirname(__FILE__) }
+preset_dir = File.expand_path(File.join(this_dir.call, '..', 'defaults'))
+
+FileList[File.join(preset_dir, '*.*')].each do |preset|
+  
+  desc "Load preset file into project"
+  file preset.pathmap('%f').tr('_', '/') => preset do |t|
+    puts "Loading preset #{t.name}"
+    File.open(t.name, 'w') do |f|
+      f.write(File.read(preset))
+    end
+  end 
+  
 end
 
-desc "Load a preset file into project"
-task :preset, [:file] do |t, args|
+desc "Show available presets"
+task :presets do |t, args|
   
-  args.with_defaults :file => nil
-
-  this_dir = Proc.new { File.symlink?(__FILE__) ? File.dirname(File.readlink(__FILE__)) : File.dirname(__FILE__) }
-  preset_dir = File.expand_path(File.join(this_dir.call, '..', 'defaults'))
-  
-  unless args.file == nil
-    presetPath = File.join(preset_dir, args.file.tr('/', '_'))
-  
-    if !File.exist?(presetPath) 
-      raise ArgumentError, "Can not find preset #{presetPath}"
-    else
-      puts "Loading preset #{args.file}"
-      
-      Dir.exist?(args.file.pathmap('%d')) || Dir.mkdir(args.file.pathmap('%d'))
-      
-      File.open(args.file, 'w') do |f|
-        f.write(File.read(presetPath))
-      end
-      
-    end
-  else
-    puts "\# Available presets \n"
-    puts FileList[File.join(preset_dir, '*.*')].pathmap('%f').map {|p| ' - ' + p.tr('_', '/')}
-  end  
+  puts "\# Available presets \n"
+  puts FileList[File.join(preset_dir, '*.*')].pathmap('%f').map {|p| ' - ' + p.tr('_', '/')}
 
 end
 
