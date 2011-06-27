@@ -6,7 +6,7 @@ task :open, [:path] => 'config/database.yml' do |t, args|
   path_to_func = /_show\/[a-z]*$/ # _show/name/_id
   path_to_doc = /\w+/ # _id
   
-  db_url = CONFIG['database'][:default]
+  db_url = CONFIG[:database][:default]
   
   if args.path.match(path_to_func) 
     

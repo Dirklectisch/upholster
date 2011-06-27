@@ -9,7 +9,7 @@ CLOBBER.include File.join('source', '_rev.txt')
 include Rufus::Verbs
 
 task :publish, [:database] => 'source.json' do |t, args|
-  args.with_defaults :database => CONFIG['database'][:default]
+  args.with_defaults :database => CONFIG[:database][:default]
   design_doc = args.database + '/_design/' + File.expand_path(Dir.pwd).pathmap('%n')
   
   resource args.database do |rt|

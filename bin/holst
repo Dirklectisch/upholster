@@ -13,7 +13,7 @@ FileList[File.expand_path(File.join(bin_dir, '..', 'tasks', '*'))].each {|tf| lo
 
 # Load configuration files
 CONFIG = FileList[File.join('config', '*.yml')].inject({}) do |config, path|
-  config[path.pathmap('%n')] = YAML.load(File.read(path))
+  config[path.pathmap('%n').to_sym] = YAML.load(File.read(path))
   config
 end
 
@@ -34,6 +34,6 @@ Dir.chdir(pwd) do
     Rake::Task[task].invoke((target unless nil))
   rescue Exception => e
     puts e.message
-    # puts e.backtrace
+    puts e.backtrace
   end
 end unless task == nil
