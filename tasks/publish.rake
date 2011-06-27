@@ -18,7 +18,7 @@ end
 
 task :publish, [:database] => 'source.json' do |t, args|
   args.with_defaults :database => CONFIG[:database][:default]
-  design_doc = args.database + '/_design/' + File.expand_path(Dir.pwd).pathmap('%n')
+  design_doc = File.join(args.database, Upholster.resolve_design_path)
   
   resource args.database do |rt|
     puts "Creating database #{rt.name}"

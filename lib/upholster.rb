@@ -2,6 +2,11 @@ require 'rake/resource_task.rb'
 
 module Upholster
     
+    def Upholster.resolve_design_path
+        dsgn_name = File.expand_path(Dir.pwd).pathmap('%n')
+        return File.join('_design/' + dsgn_name)
+    end
+    
     def Upholster.resolve_path fragment
 
         db_url = CONFIG[:database][:default]
@@ -11,8 +16,7 @@ module Upholster
 
         if fragment.match(func_name) 
             
-            doc_name = '_design/' + File.expand_path(Dir.pwd).pathmap('%n')
-            return File.join(db_url, doc_name, fragment)
+            return File.join(db_url, Upholster.resolve_design_path, fragment)
 
         elsif fragment.match(doc_id) 
             
