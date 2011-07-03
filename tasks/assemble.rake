@@ -1,7 +1,6 @@
 require 'rake'
 require 'rake/clean'
-require 'yajl'
-require 'yaml'
+autoload :Yajl, 'yajl'
 
 BASE_FILES ||= FileList.new
 

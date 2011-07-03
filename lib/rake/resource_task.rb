@@ -1,5 +1,5 @@
 require 'rake'
-require 'rufus-verbs'
+autoload :Rufus, 'rufus-verbs'
 
 module Rake
   

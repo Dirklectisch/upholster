@@ -1,13 +1,10 @@
 require 'rake'
 require 'rake/clean'
 require 'rake/resource_task'
-require 'yajl'
-require 'rufus-verbs'
+autoload :Rufus, 'rufus-verbs'
 require 'upholster'
 
 CLOBBER.include File.join('source', '_rev.txt')
-
-include Rufus::Verbs
 
 desc "Open CouchDB design doc method in a browser"
 task :open, [:path] => 'config/database.yml' do |t, args|
@@ -19,6 +16,8 @@ end
 task :publish, [:database] => 'source.json' do |t, args|
   args.with_defaults :database => CONFIG[:database][:default]
   design_doc = File.join(args.database, Upholster.resolve_design_path)
+
+  include Rufus::Verbs
   
   resource args.database do |rt|
     puts "Creating database #{rt.name}"

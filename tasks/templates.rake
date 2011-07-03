@@ -1,6 +1,5 @@
 require 'rake'
 require 'rake/clean'
-require 'yaml'
 
 TEMPLATE_BASE_FILES = FileList[File.join('config', 'soy.yml'), File.join('template', 'shared', 'srvsoyutils.js')]
 

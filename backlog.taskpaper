@@ -24,7 +24,8 @@ Release History:
 	v 0.2.2:
 		- Config dictionary uses symbols @done(2011-06-27)
 		- Auto add directory tasks for presets @done(2011-07-03)
-		- Autoload dependencies on demand
+		- Autoload dependencies on demand @done(2011-07-03)
+		- Use holst namespace for lib files
 
 	v 0.2.1:
 		- 'open' command to view a design doc method @done(2011-06-15)
