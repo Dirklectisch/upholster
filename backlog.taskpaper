@@ -1,5 +1,4 @@
 Wishlist:
-	- Render local preview of design functions
 	- Assemble a design document from separate files
 		- Configure .json encoding settings
 		- Apply whitepsace optimization when including JavaScript
@@ -10,7 +9,6 @@ Wishlist:
 		- Conditional updates of _design document
 	-  Command Line Interface
 		- Man page / Help options
-		- Create a generic way to find url's and paths
 	- Compile methods using the closure compiler
 		- Load HTML page mockup into js variable
 		- Combine several JS files into a design doc method
@@ -18,14 +16,12 @@ Wishlist:
 		- Roadmap update
 		- Make design goals more explicit
 		- Document preset task
-		
 
 Release History:
 	v 0.2.2:
 		- Config dictionary uses symbols @done(2011-06-27)
 		- Auto add directory tasks for presets @done(2011-07-03)
 		- Autoload dependencies on demand @done(2011-07-03)
-		- Use holst namespace for lib files
 
 	v 0.2.1:
 		- 'open' command to view a design doc method @done(2011-06-15)

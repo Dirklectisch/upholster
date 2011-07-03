@@ -9,6 +9,7 @@ An experimental tool chain for developing CouchDB _design/ documents.
 
 ## What's on the horizon? ##
 
+- Render previews of design document functions
 - Compiling design document functions from separate files
 
 # Usage #
@@ -24,7 +25,7 @@ Installation of upholster is very simple, but you will need to take care of inst
 Copy the source code to a folder of your choice.
 
     $ git clone git://github.com/Dirklectisch/upholster.git
-    $ git checkout v0.2.1
+    $ git checkout v0.2.2
 
 Create a symbolic link to the ./upholster/bin/holst executable somewhere within your load path. Note that both have to be absolute paths for the symbolic link to work.
 
@@ -98,6 +99,6 @@ There's also a *open* command that let's you view pages in your default browser 
     $ holst open 723db74c7734e9bf2414559163004eee
     $ holst open _show/hello
     
-This makes it considerably easier to go between editing and checking the results of you work.
+This makes it considerably easier to go between editing and checking the results of your work.
 
 ---
