@@ -24,29 +24,6 @@ task :assemble => [:init, 'source.json']
 directory 'source'
 directory 'config'
 
-this_dir = Proc.new { File.symlink?(__FILE__) ? File.dirname(File.readlink(__FILE__)) : File.dirname(__FILE__) }
-preset_dir = File.expand_path(File.join(this_dir.call, '..', 'defaults'))
-
-FileList[File.join(preset_dir, '*.*')].each do |preset|
-  
-  desc "Load preset file into project"
-  file preset.pathmap('%f').tr('_', '/') => preset do |t|
-    puts "Loading preset #{t.name}"
-    File.open(t.name, 'w') do |f|
-      f.write(File.read(preset))
-    end
-  end 
-  
-end
-
-desc "Show available presets"
-task :presets do |t, args|
-  
-  puts "\# Available presets \n"
-  puts FileList[File.join(preset_dir, '*.*')].pathmap('%f').map {|p| ' - ' + p.tr('_', '/')}
-
-end
-
 desc "Render design document _id header element"
 rule 'source/_id.txt' do |t|
   
