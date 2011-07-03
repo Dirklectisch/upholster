@@ -1,6 +1,5 @@
 require 'rake'
 require 'rake/clean'
-autoload :Yajl, 'yajl'
 
 BASE_FILES ||= FileList.new
 
@@ -40,6 +39,8 @@ desc "Assemble a JSON file from source directory"
 rule '.json' => lambda {|file| 
   FileList[File.join(file.pathmap('%X'), '**', '*'), file.pathmap('%X')]
   } do |t|
+
+  require 'yajl'
   
   # Determine actual source files (instead of all prerequisites)
   t.sources = FileList[File.join(t.name.pathmap('%X'), '*')].map do |src|
